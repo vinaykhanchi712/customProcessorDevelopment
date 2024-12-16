@@ -7,14 +7,19 @@
     <groupId>org.example</groupId>
     <artifactId>customProcessorDevelopment</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>nar</packaging>
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <!-- Define NiFi version -->
+        <nifi.version>2.0.0</nifi.version>
+        <!-- Use Java 17 as the source and target version -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- NiFi API Dependency -->
         <dependency>
             <groupId>org.apache.nifi</groupId>
             <artifactId>nifi-api</artifactId>
@@ -22,13 +27,15 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-processor-utils -->
+        <!-- NiFi Processor Utilities -->
         <dependency>
             <groupId>org.apache.nifi</groupId>
             <artifactId>nifi-processor-utils</artifactId>
             <version>1.15.0</version>
+            <scope>provided</scope>
         </dependency>
 
+        <!-- Jackson Databind for JSON processing -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -36,4 +43,30 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- NiFi NAR Maven Plugin -->
+            <plugin>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-nar-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- Set a classifier for the NAR file -->
+                    <classifier>nar</classifier>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Compiler Plugin for Java version -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
